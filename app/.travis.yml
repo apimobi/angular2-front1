@@ -1,0 +1,27 @@
+
+language: node_js
+
+node_js:
+    - "5"
+
+before_script:
+    - npm run compile
+
+script:
+    - npm run test
+
+after_script:
+  - codeclimate-test-reporter < coverage/report-lcov/lcov.info
+
+addons:
+    code_climate:
+        repo_token: dd1361d61eff602294ea6b59443136e0300552d761d9f4b3d0f2fe1ad40d05cc
+
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/d800ccd3d607822ef1f0
+    on_success: change
+    on_failure: always
+    on_start: never
