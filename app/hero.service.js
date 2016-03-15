@@ -44,7 +44,7 @@ System.register(['./mock-heroes', 'angular2/core', 'angular2/http'], function(ex
                     return this._http
                         .get(this.baseURL + url)
                         .toPromise()
-                        .then(function (response) { return response.json()[1]; });
+                        .then(function (response) { return response.json(); });
                 };
                 HeroService.prototype.helloData = function (data) {
                     console.log('hello');

@@ -34,7 +34,7 @@ export class HeroService {
       return this._http
                 .get(this.baseURL+url)
                 .toPromise()
-                .then((response) => response.json()[1]);
+                .then((response) => response.json());
   }
 
 

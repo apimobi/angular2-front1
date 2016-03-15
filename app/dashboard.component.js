@@ -34,8 +34,17 @@ System.register(['angular2/core', './hero.service', 'angular2/router'], function
                         .then(function (heroes) { return _this.okResponse(heroes); });
                 };
                 DashboardComponent.prototype.okResponse = function (data) {
-                    var dataOk = JSON.parse(data);
-                    for (var propName in dataOk) {
+                    // var dataOk = JSON.parse(data);
+                    var hero = {};
+                    var i = 0;
+                    for (var key in data) {
+                        hero = {};
+                        hero.name = data[key]['username'];
+                        hero.id = i;
+                        this.heroes.push(hero);
+                        console.log(hero);
+                        // console.log('ouiiii'+data['name']);
+                        i++;
                     }
                     // return new Person(data.name, data.age);
                     // heroes

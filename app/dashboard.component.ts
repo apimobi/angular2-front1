@@ -25,13 +25,19 @@ export class DashboardComponent implements OnInit {
 
   okResponse(data)
   {
-    var dataOk = JSON.parse(data);
-
-    for (var propName in dataOk) {
-          // var hero = new Hero();
-          // foo1.name = "John Doe";
-          // this.heroes.push( new Hero() );
+    // var dataOk = JSON.parse(data);
+    var hero = <Hero>{};
+    var i = 0;
+    for (var key in data) {
+      hero = <Hero>{};
+      hero.name = data[key]['username'];
+      hero.id = i;
+      this.heroes.push(hero);
+      console.log(hero);
+      // console.log('ouiiii'+data['name']);
+      i++;
     }
+
     // return new Person(data.name, data.age);
 
     // heroes
