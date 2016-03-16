@@ -30,20 +30,25 @@ System.register(['angular2/core', './hero-detail.component', './hero.service', '
                     this._heroService = _heroService;
                     this._router = _router;
                     this.title = 'Tour of Heroes';
-                    this.heroes = HEROES;
+                    this.heroes = [];
                 }
                 HeroesComponent.prototype.ngOnInit = function () {
-                    this.getHeroes();
+                    var _this = this;
+                    this._heroService.getUsers('users')
+                        .subscribe(function (heroes) { return _this.okResponse(heroes); });
                 };
                 HeroesComponent.prototype.onSelect = function (hero) { this.selectedHero = hero; };
-                HeroesComponent.prototype.getHeroes = function () {
-                    var _this = this;
-                    // this._heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
-                    this._heroService.getUsers().search('test')
-                        .then(function (items) { return _this.heroes = items; });
-                };
-                HeroesComponent.prototype.okResponse = function (result) {
-                    console.log(result);
+                HeroesComponent.prototype.okResponse = function (data) {
+                    // var data = JSON.parse(dataResult);
+                    var hero = {};
+                    var i = 0;
+                    for (var key in data) {
+                        hero = {};
+                        hero.name = data[key]['username'];
+                        hero.id = i;
+                        this.heroes.push(hero);
+                        i++;
+                    }
                 };
                 HeroesComponent.prototype.gotoDetail = function () {
                     this._router.navigate(['HeroDetail', { id: this.selectedHero.id }]);

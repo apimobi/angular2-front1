@@ -17,28 +17,31 @@ import {Http, HTTP_PROVIDERS} from 'angular2/http';
 export class HeroesComponent implements OnInit{
   public title = 'Tour of Heroes';
   public selectedHero: Hero;
-  public heroes = HEROES;
+  public heroes: Hero[] = [];
 
   constructor(
       private _heroService: HeroService,
       private _router: Router ) {}
 
   ngOnInit() {
-    this.getHeroes();
+    this._heroService.getUsers('users')
+                         .subscribe(heroes => this.okResponse(heroes));
   }
 
   onSelect(hero: Hero) { this.selectedHero = hero; }
 
-  getHeroes() {
-    // this._heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
-    this._heroService.getUsers().search('test')
-                         .then(items => this.heroes = items);
-
-  }
-
-  okResponse(result)
+  okResponse(data)
   {
-    console.log(result);
+    // var data = JSON.parse(dataResult);
+    var hero = <Hero>{};
+    var i = 0;
+    for (var key in data) {
+      hero = <Hero>{};
+      hero.name = data[key]['username'];
+      hero.id = i;
+      this.heroes.push(hero);
+      i++;
+    }
   }
 
 

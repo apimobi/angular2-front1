@@ -1,4 +1,4 @@
-System.register(['./mock-heroes', 'angular2/core', 'angular2/http'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,18 +8,18 @@ System.register(['./mock-heroes', 'angular2/core', 'angular2/http'], function(ex
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var mock_heroes_1, core_1, http_1;
+    var core_1, http_1, Observable_1;
     var HeroService;
     return {
         setters:[
-            function (mock_heroes_1_1) {
-                mock_heroes_1 = mock_heroes_1_1;
-            },
             function (core_1_1) {
                 core_1 = core_1_1;
             },
             function (http_1_1) {
                 http_1 = http_1_1;
+            },
+            function (Observable_1_1) {
+                Observable_1 = Observable_1_1;
             }],
         execute: function() {
             HeroService = (function () {
@@ -27,39 +27,81 @@ System.register(['./mock-heroes', 'angular2/core', 'angular2/http'], function(ex
                     this._http = http;
                     this.baseURL = 'http://jsonplaceholder.typicode.com/';
                 }
-                HeroService.prototype.getHeroes = function () {
-                    return Promise.resolve(mock_heroes_1.HEROES);
-                };
+                // getHeroes() {
+                //   return Promise.resolve(HEROES);
+                // }
                 /*
-                  * Get method for the API
-                  */
+                 * Get method for the API
+                 */
                 HeroService.prototype.getUsers = function (url) {
-                    // return this._http.get(this.baseURL + url)
-                    //            .map(res => this.helloData(res));
-                    //           //  .catch(this.handleError);
+                    var _this = this;
                     if (url === void 0) { url = 'users'; }
-                    // console.log('>>>'+users);
-                    //
-                    // return users;
-                    return this._http
-                        .get(this.baseURL + url)
-                        .toPromise()
-                        .then(function (response) { return response.json(); });
+                    // if(!localStorage.getItem('data'))
+                    // {
+                    //   // return this._http
+                    //   //            .get(this.baseURL+url)
+                    //   //            .toPromise()
+                    //   //            .then((response) => this.helloData(response.json()));
+                    if (!localStorage.getItem('data')) {
+                        return this.getData();
+                    }
+                    else {
+                        return Observable_1.Observable.create(function (observer) {
+                            observer.next(_this.getLocalData());
+                            observer.complete();
+                        });
+                    }
+                };
+                HeroService.prototype.getData = function (id) {
+                    var _this = this;
+                    if (id === void 0) { id = null; }
+                    return this._http.get(this.baseURL + 'users')
+                        .map(function (responseData) {
+                        if (id)
+                            return _this.helloData(responseData.json())[id];
+                        else
+                            return _this.helloData(responseData.json());
+                    });
+                };
+                HeroService.prototype.saveData = function (data) {
+                    // console.log(data);
+                    localStorage.setItem('data', JSON.stringify(data));
+                };
+                HeroService.prototype.getLocalData = function () {
+                    return JSON.parse(localStorage.getItem('data'));
+                };
+                HeroService.prototype.getUsersById = function (url, id) {
+                    var _this = this;
+                    if (url === void 0) { url = 'users'; }
+                    if (id === void 0) { id = 0; }
+                    if (!localStorage.getItem('data')) {
+                        return this.getData(id);
+                    }
+                    else {
+                        return Observable_1.Observable.create(function (observer) {
+                            observer.next(_this.getLocalData()[id]);
+                            observer.complete();
+                        });
+                    }
                 };
                 HeroService.prototype.helloData = function (data) {
                     console.log('hello');
-                    console.log(data.json()[0]);
+                    // console.log(data);
+                    this.saveData(data);
+                    return this.getLocalData();
                 };
-                HeroService.prototype.getHero = function (id) {
-                    return Promise.resolve(mock_heroes_1.HEROES).then(function (heroes) { return heroes.filter(function (hero) { return hero.id === id; })[0]; });
-                };
-                HeroService.prototype.getHeroesSlowly = function () {
-                    return new Promise(function (resolve) {
-                        return setTimeout(function () { return resolve(mock_heroes_1.HEROES); }, 10);
-                    } // 2 seconds
-                     // 2 seconds
-                    );
-                };
+                // getHero(id:number)
+                // {
+                //   return Promise.resolve(HEROES).then(
+                //     heroes => heroes.filter(hero => hero.id === id)[0]
+                //   );
+                // }
+                //
+                // getHeroesSlowly() {
+                //   return new Promise<Hero[]>(resolve =>
+                //     setTimeout(()=>resolve(HEROES), 10) // 2 seconds
+                //   );
+                // }
                 /*
                 * Error handling for the API
                 */

@@ -1,9 +1,8 @@
-
 import { Component, OnInit } from 'angular2/core';
 import { Hero } from './hero';
 import { HeroService } from './hero.service';
 import { Router } from 'angular2/router';
-import {Http, HTTP_PROVIDERS} from 'angular2/http';
+// import {Http, HTTP_PROVIDERS} from 'angular2/http';
 
 
 
@@ -18,14 +17,15 @@ export class DashboardComponent implements OnInit {
     private _heroService: HeroService) {
   }
   ngOnInit() {
-    this._heroService.getUsers('users')
-                         .then(heroes => this.okResponse(heroes));
+    // this._heroService.getUsers('users')
+    //                      .then(heroes => this.okResponse(heroes));
+    this._heroService.getUsers('users').subscribe(heroes => this.okResponse(heroes));
   }
 
 
   okResponse(data)
   {
-    // var dataOk = JSON.parse(data);
+    // var data = JSON.parse(dataResult);
     var hero = <Hero>{};
     var i = 0;
     for (var key in data) {
@@ -33,15 +33,8 @@ export class DashboardComponent implements OnInit {
       hero.name = data[key]['username'];
       hero.id = i;
       this.heroes.push(hero);
-      console.log(hero);
-      // console.log('ouiiii'+data['name']);
       i++;
     }
-
-    // return new Person(data.name, data.age);
-
-    // heroes
-    console.log(data);
   }
 
   gotoDetail(hero: Hero) {

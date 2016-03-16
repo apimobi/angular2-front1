@@ -22,6 +22,7 @@ System.register(['angular2/core', './hero.service', 'angular2/router'], function
                 router_1 = router_1_1;
             }],
         execute: function() {
+            // import {Http, HTTP_PROVIDERS} from 'angular2/http';
             DashboardComponent = (function () {
                 function DashboardComponent(_router, _heroService) {
                     this._router = _router;
@@ -30,11 +31,12 @@ System.register(['angular2/core', './hero.service', 'angular2/router'], function
                 }
                 DashboardComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    this._heroService.getUsers('users')
-                        .then(function (heroes) { return _this.okResponse(heroes); });
+                    // this._heroService.getUsers('users')
+                    //                      .then(heroes => this.okResponse(heroes));
+                    this._heroService.getUsers('users').subscribe(function (heroes) { return _this.okResponse(heroes); });
                 };
                 DashboardComponent.prototype.okResponse = function (data) {
-                    // var dataOk = JSON.parse(data);
+                    // var data = JSON.parse(dataResult);
                     var hero = {};
                     var i = 0;
                     for (var key in data) {
@@ -42,13 +44,8 @@ System.register(['angular2/core', './hero.service', 'angular2/router'], function
                         hero.name = data[key]['username'];
                         hero.id = i;
                         this.heroes.push(hero);
-                        console.log(hero);
-                        // console.log('ouiiii'+data['name']);
                         i++;
                     }
-                    // return new Person(data.name, data.age);
-                    // heroes
-                    console.log(data);
                 };
                 DashboardComponent.prototype.gotoDetail = function (hero) {
                     var link = ['HeroDetail', { id: hero.id }];

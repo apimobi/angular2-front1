@@ -8,7 +8,7 @@ import { HeroService } from './hero.service';
   templateUrl: 'app/hero-detail.component.html',
   inputs: ['hero'],
 })
-export class HeroDetailComponent {
+export class HeroDetailComponent implements OnInit{
   hero: Hero;
 
   constructor(
@@ -18,8 +18,17 @@ export class HeroDetailComponent {
 
   ngOnInit() {
     let id = +this._routeParams.get('id');
-    this._heroService.getHero(id)
-      .then(hero => this.hero = hero);
+    this._heroService.getUsersById('users',  id)
+                     .subscribe(hero => this.okResponse(hero));
+  }
+
+  okResponse(data)
+  {
+    // var dataOk = JSON.parse(data);
+    console.log(data);
+    this.hero = <Hero>{};
+    this.hero.name = data['username'];
+    this.hero.id = +this._routeParams.get('id');
   }
 
   goBack() {
