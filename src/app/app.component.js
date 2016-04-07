@@ -1,4 +1,4 @@
-System.register(['angular2/core', './hero.service', './heroes.component', './components/navbar/navbar.component', 'angular2/router', './dashboard.component', './hero-detail.component', 'angular2/http', 'rxjs/Rx'], function(exports_1, context_1) {
+System.register(['angular2/core', './hero.service', './services/brandalley.service', './heroes.component', './components/navbar/navbar.component', 'angular2/router', './dashboard.component', './hero-detail.component', './components/line/line.component', 'angular2/http', 'rxjs/Rx'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './hero.service', './heroes.component', './com
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, hero_service_1, heroes_component_1, navbar_component_1, router_1, dashboard_component_1, hero_detail_component_1, http_1;
+    var core_1, hero_service_1, brandalley_service_1, heroes_component_1, navbar_component_1, router_1, dashboard_component_1, hero_detail_component_1, line_component_1, http_1;
     var AppComponent;
     return {
         setters:[
@@ -19,6 +19,9 @@ System.register(['angular2/core', './hero.service', './heroes.component', './com
             },
             function (hero_service_1_1) {
                 hero_service_1 = hero_service_1_1;
+            },
+            function (brandalley_service_1_1) {
+                brandalley_service_1 = brandalley_service_1_1;
             },
             function (heroes_component_1_1) {
                 heroes_component_1 = heroes_component_1_1;
@@ -35,6 +38,9 @@ System.register(['angular2/core', './hero.service', './heroes.component', './com
             function (hero_detail_component_1_1) {
                 hero_detail_component_1 = hero_detail_component_1_1;
             },
+            function (line_component_1_1) {
+                line_component_1 = line_component_1_1;
+            },
             function (http_1_1) {
                 http_1 = http_1_1;
             },
@@ -42,7 +48,7 @@ System.register(['angular2/core', './hero.service', './heroes.component', './com
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.title = 'Angular-Front1';
+                    this.title = 'Brand-Front1';
                 }
                 AppComponent = __decorate([
                     core_1.Component({
@@ -52,6 +58,7 @@ System.register(['angular2/core', './hero.service', './heroes.component', './com
                         providers: [
                             router_1.ROUTER_PROVIDERS,
                             hero_service_1.HeroService,
+                            brandalley_service_1.BrandalleyService,
                             http_1.HTTP_PROVIDERS
                         ]
                     }),
@@ -71,6 +78,11 @@ System.register(['angular2/core', './hero.service', './heroes.component', './com
                             path: '/detail/:id',
                             name: 'HeroDetail',
                             component: hero_detail_component_1.HeroDetailComponent
+                        },
+                        {
+                            path: '/lines',
+                            name: 'Lines',
+                            component: line_component_1.LineComponent
                         }
                     ]), 
                     __metadata('design:paramtypes', [])
